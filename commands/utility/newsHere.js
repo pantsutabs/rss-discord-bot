@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const { dataFilePath } = require('../../config.json');
 
 async function getJson(url) {
@@ -40,7 +40,9 @@ async function saveJson(url, data) {
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('news-here')
-		.setDescription('Starts posting news in this channel!'),
+		.setDescription('Starts posting news in this channel!')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.setDMPermission(false),
 	async execute(interaction) {
         dataFile = await getJson(dataFilePath);
         dataFile.guildsToUpdate[interaction.guildId] = {channelId:interaction.channelId}
